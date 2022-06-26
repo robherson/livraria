@@ -20,7 +20,7 @@ public class LivroDTO {
     private String ano;
     private Boolean estaAlugado;
 
-    public LivroDTO fromLivro(Livro livro){
+    public static LivroDTO fromLivro(Livro livro){
         
         return LivroDTO.builder()
             .titulo(livro.getTitulo())
