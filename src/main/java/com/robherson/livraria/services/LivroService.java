@@ -76,6 +76,19 @@ public class LivroService {
         
         return LivroDTO.fromLivro(livro);
     }
+
+    public LivroDTO removerLivro(String id) throws Exception{
+        Livro livro = livroRepository.findById(id)
+        .orElseThrow(() -> new LivroNotFoundException());
+
+        if (livro.getEstaAlugado()){
+            throw new LivroAlugadoException();
+        }
+
+        livroRepository.delete(livro);
+        
+        return LivroDTO.fromLivro(livro);
+    }
     
     
 }
