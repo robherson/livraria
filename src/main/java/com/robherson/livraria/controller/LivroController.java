@@ -38,5 +38,11 @@ public class LivroController {
 
         return ResponseEntity.ok().body(livroService.alugarLivro(id));
     }
+
+    @PutMapping(value = "devolver/{id}")
+    public ResponseEntity<LivroDTO> devolverLivro(@PathVariable String id) throws Exception{
+
+        return ResponseEntity.ok().body(livroService.devolverLivro(id));
+    }
     
 }

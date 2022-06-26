@@ -9,6 +9,7 @@ import org.springframework.stereotype.Service;
 import com.robherson.livraria.domain.Livro;
 import com.robherson.livraria.dto.LivroDTO;
 import com.robherson.livraria.exception.LivroAlugadoException;
+import com.robherson.livraria.exception.LivroNaoAlugadoException;
 import com.robherson.livraria.exception.LivroNotFoundException;
 import com.robherson.livraria.repository.LivroRepository;
 
@@ -39,6 +40,20 @@ public class LivroService {
         }
         
         livro.setEstaAlugado(true);
+        livroRepository.save(livro);
+
+        return LivroDTO.fromLivro(livro);
+    }
+
+    public LivroDTO devolverLivro(String id) throws Exception{
+        Livro livro = livroRepository.findById(id)
+        .orElseThrow(() -> new LivroNotFoundException());
+
+        if(!livro.getEstaAlugado()){
+            throw new LivroNaoAlugadoException();
+        }
+        
+        livro.setEstaAlugado(false);
         livroRepository.save(livro);
 
         return LivroDTO.fromLivro(livro);
