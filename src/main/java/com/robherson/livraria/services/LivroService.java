@@ -58,5 +58,24 @@ public class LivroService {
 
         return LivroDTO.fromLivro(livro);
     }
+
+    public LivroDTO editarLivro(LivroDTO livroDTO) throws Exception{
+        Livro livro = livroRepository.findById(livroDTO.getId())
+        .orElseThrow(() -> new LivroNotFoundException());
+
+        if (livro.getEstaAlugado()){
+            throw new LivroAlugadoException();
+        }
+
+        livro.setTitulo(livroDTO.getTitulo());
+        livro.setAutor(livroDTO.getAutor());
+        livro.setAno(livroDTO.getAno());
+        livro.setEstaAlugado(livroDTO.getEstaAlugado());
+
+        livroRepository.save(livro);
+        
+        return LivroDTO.fromLivro(livro);
+    }
+    
     
 }

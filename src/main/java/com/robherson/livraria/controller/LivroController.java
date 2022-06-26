@@ -7,6 +7,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PutMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -43,6 +44,12 @@ public class LivroController {
     public ResponseEntity<LivroDTO> devolverLivro(@PathVariable String id) throws Exception{
 
         return ResponseEntity.ok().body(livroService.devolverLivro(id));
+    }
+
+    @PutMapping()
+    public ResponseEntity<LivroDTO> editarLivro(@RequestBody LivroDTO livroDTO) throws Exception{
+
+        return ResponseEntity.ok().body(livroService.editarLivro(livroDTO));
     }
     
 }
