@@ -35,6 +35,12 @@ public class LivroController {
         return ResponseEntity.ok().body(livroService.findById(id));
     }
 
+    @GetMapping(value = "/search")
+    public ResponseEntity<List<LivroDTO>> searchLivros(@RequestBody LivroDTO livroDTO) throws Exception{
+        
+        return ResponseEntity.ok().body(livroService.searchLivros(livroDTO));
+    }
+
     @PutMapping(value = "alugar/{id}")
     public ResponseEntity<LivroDTO> alugarLivro(@PathVariable String id) throws Exception{
 

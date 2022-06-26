@@ -4,6 +4,9 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.mongodb.core.MongoTemplate;
+import org.springframework.data.mongodb.core.query.Criteria;
+import org.springframework.data.mongodb.core.query.Query;
 import org.springframework.stereotype.Service;
 
 import com.robherson.livraria.domain.Livro;
@@ -17,7 +20,10 @@ import com.robherson.livraria.repository.LivroRepository;
 public class LivroService {
 
     @Autowired
-    LivroRepository livroRepository;
+    private LivroRepository livroRepository;
+
+    @Autowired
+    private MongoTemplate mongoTemplate;
 
     public List<LivroDTO> findAll(){
         List<Livro> livros =  livroRepository.findAll();
@@ -30,6 +36,36 @@ public class LivroService {
             .map(l -> LivroDTO.fromLivro(l))
             .orElseThrow(() -> new LivroNotFoundException());
     }
+
+    public List<LivroDTO> searchLivros(LivroDTO livroDto){
+        
+        Query dynamicQuery = new Query();
+
+        if ( livroDto.getTitulo() != null){
+            Criteria nameCriteria = Criteria.where("titulo").regex(livroDto.getTitulo(), "i");
+            dynamicQuery.addCriteria(nameCriteria);
+        }
+        if ( livroDto.getAutor() != null){
+            Criteria autorCriteria = Criteria.where("autor").regex(livroDto.getAutor(), "i");
+            dynamicQuery.addCriteria(autorCriteria);
+        }
+        if ( livroDto.getAno() != null){
+            Criteria anoCriteria = Criteria.where("ano").regex(livroDto.getAno(), "i");
+            dynamicQuery.addCriteria(anoCriteria);
+        }
+        if ( livroDto.getEstaAlugado() != null){
+            Criteria estaAlugadoCriteria = Criteria.where("estaAlugado").is(livroDto.getEstaAlugado());
+            dynamicQuery.addCriteria(estaAlugadoCriteria);
+        }
+
+        List<Livro> result = mongoTemplate.find(dynamicQuery, Livro.class);
+
+        return result.stream().map(l -> LivroDTO.fromLivro(l)).collect(Collectors.toList());
+        
+    }
+
+
+
 
     public LivroDTO alugarLivro(String id) throws Exception{
         Livro livro = livroRepository.findById(id)
@@ -89,6 +125,8 @@ public class LivroService {
         
         return LivroDTO.fromLivro(livro);
     }
+
+
     
     
 }
