@@ -21,5 +21,11 @@ public class LivroService {
 
         return livros.stream().map(l -> LivroDTO.fromLivro(l)).collect(Collectors.toList());
     }
+
+    public LivroDTO findById(String id){
+        return livroRepository.findById(id)
+            .map(l -> LivroDTO.fromLivro(l))
+            .orElse(null);
+    }
     
 }
