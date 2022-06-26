@@ -23,6 +23,7 @@ public class LivroDTO {
     public static LivroDTO fromLivro(Livro livro){
         
         return LivroDTO.builder()
+            .id(livro.getId())
             .titulo(livro.getTitulo())
             .autor(livro.getAutor())
             .ano(livro.getAno())
