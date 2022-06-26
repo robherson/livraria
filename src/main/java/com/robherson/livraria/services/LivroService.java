@@ -8,6 +8,7 @@ import org.springframework.stereotype.Service;
 
 import com.robherson.livraria.domain.Livro;
 import com.robherson.livraria.dto.LivroDTO;
+import com.robherson.livraria.exception.LivroNotFoundException;
 import com.robherson.livraria.repository.LivroRepository;
 
 @Service
@@ -22,10 +23,10 @@ public class LivroService {
         return livros.stream().map(l -> LivroDTO.fromLivro(l)).collect(Collectors.toList());
     }
 
-    public LivroDTO findById(String id){
+    public LivroDTO findById(String id) throws Exception{
         return livroRepository.findById(id)
             .map(l -> LivroDTO.fromLivro(l))
-            .orElse(null);
+            .orElseThrow(() -> new LivroNotFoundException());
     }
     
 }
