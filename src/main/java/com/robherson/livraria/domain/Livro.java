@@ -1,6 +1,9 @@
 package com.robherson.livraria.domain;
 
+import java.io.Serializable;
+
 import org.springframework.data.annotation.Id;
+import org.springframework.data.annotation.Transient;
 import org.springframework.data.mongodb.core.mapping.Document;
 
 import lombok.AllArgsConstructor;
@@ -14,8 +17,11 @@ import lombok.Setter;
 @Getter
 @Setter
 @Builder
-@Document(collation = "livros")
-public class Livro {
+@Document(collection = "livros")
+public class Livro implements Serializable {
+
+    @Transient
+    public static final String SEQUENCE_NAME = "users_sequence";
 
     @Id
     private String id;
