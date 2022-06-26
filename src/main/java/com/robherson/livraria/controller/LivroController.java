@@ -6,6 +6,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -27,9 +28,15 @@ public class LivroController {
     }    
 
     @GetMapping(value = "/{id}")
-    public ResponseEntity<LivroDTO> findById(@PathVariable String id) throws Exception{        
-        LivroDTO livroDto = livroService.findById(id);
-        return ResponseEntity.ok().body(livroDto);
+    public ResponseEntity<LivroDTO> findById(@PathVariable String id) throws Exception{
+        
+        return ResponseEntity.ok().body(livroService.findById(id));
+    }
+
+    @PutMapping(value = "alugar/{id}")
+    public ResponseEntity<LivroDTO> alugarLivro(@PathVariable String id) throws Exception{
+
+        return ResponseEntity.ok().body(livroService.alugarLivro(id));
     }
     
 }
